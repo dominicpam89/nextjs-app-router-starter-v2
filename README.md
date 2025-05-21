@@ -1,15 +1,18 @@
-# Next.js 15 Starter Pack
+# Next.js 15 Starter Pack with shadcn/ui and Theme Provider
 
-This is a Next.js 15 starter project using the App Router, configured with TypeScript, Prettier for formatting, ESLint for code quality, and Vitest with jsdom for UI testing. The project does not use a `src/` directory, with source files organized in `app/`, `components/`, etc.
+This is a Next.js 15 starter project using the App Router, configured with TypeScript, Prettier for formatting, ESLint for code quality, Vitest with jsdom for UI testing, and shadcn/ui with a theme provider for light/dark mode support. The project does not use a `src/` directory, with source files organized in `app/`, `components/`, and `lib/`.
 
 ## Features
 
-- **Next.js 15**: Uses the App Router for modern routing and React 19 for enhanced features.
+- **Next.js 15**: Utilizes the App Router and React 19 for modern routing and enhanced features.
 - **TypeScript**: Type-safe development with path aliases (`@/*` mapped to `app/*`).
-- **Prettier**: Standalone code formatting with custom rules (tabs, single quotes, etc.).
-- **ESLint**: Code quality linting, separated from Prettier, using flat configuration.
-- **Vitest with jsdom**: Fast unit testing with React Testing Library for UI components.
-- **VS Code Integration**: Configured for auto-formatting and linting on save.
+- **Prettier**: Standalone code formatting with custom rules (tabs, `tabWidth: 4`, single quotes).
+- **ESLint**: Code quality linting, separated from Prettier, using ESLint 9 flat configuration.
+- **Vitest with jsdom**: Fast unit testing for React components using React Testing Library.
+- **shadcn/ui**: Customizable, accessible React components built with Tailwind CSS and Radix UI.
+- **Theme Provider**: Light/dark/system mode support via `next-themes` with a toggle component.
+- **Tailwind CSS v4**: Configured with shadcn/ui’s theme variables for consistent styling.
+- **VS Code Integration**: Auto-formatting with Prettier and ESLint fixes on save.
 
 ## Prerequisites
 
@@ -34,9 +37,25 @@ This is a Next.js 15 starter project using the App Router, configured with TypeS
      npm install
      ```
 
-3. **Verify Configuration**:
-     - Ensure `.prettierrc`, `.prettierignore`, `eslint.config.mjs`, `tsconfig.json`, and `vitest.config.mts` are in the project root.
-     - Check `app/tests/setup.ts` for Vitest setup and `app/__tests__/page.test.tsx` for a sample test.
+3. **Initialize shadcn/ui** (if not already set up):
+
+     ```bash
+     npx --legacy-peer-deps shadcn@latest init
+     ```
+
+     Recommended options:
+
+     - Style: Default
+     - Base color: Slate
+     - CSS variables: Yes
+     - Components directory: `components/ui`
+     - Global CSS: `app/globals.css`
+     - Utils: `lib/utils.ts`
+
+4. **Verify Configuration**:
+     - Ensure the following files are in the project root: `.prettierrc`, `.prettierignore`, `eslint.config.mjs`, `tsconfig.json`, `vitest.config.mts`, `components.json`, `tailwind.config.js`.
+     - Check `app/globals.css` for Tailwind and shadcn/ui styles.
+     - Verify `app/tests/setup.ts` for Vitest setup, `app/__tests__/page.test.tsx` for a sample test, `components/theme-provider.tsx` for theming, and `components/ui/` for shadcn/ui components.
 
 ## Available Scripts
 
@@ -48,7 +67,7 @@ In the project directory, you can run:
      npm run dev
      ```
 
-     Runs the app in development mode with Turbopack. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+     Runs the app in development mode with Turbopack. Open [http://localhost:3000](http://localhost:3000) to view it, including the shadcn/ui button and theme toggle.
 
 - **Build for Production**:
 
@@ -80,7 +99,7 @@ In the project directory, you can run:
      npm run format
      ```
 
-     Formats all `.ts`, `.tsx`, `.js`, and `.jsx` files using Prettier.
+     Formats all `.ts`, `.tsx`, `.js`, and `.jsx` files using Prettier, excluding `components/ui/*`.
 
 - **Check Formatting**:
 
@@ -88,7 +107,7 @@ In the project directory, you can run:
      npm run format:check
      ```
 
-     Verifies that files are formatted per Prettier rules.
+     Verifies that files are formatted according to Prettier rules.
 
 - **Run Tests**:
 
@@ -96,7 +115,7 @@ In the project directory, you can run:
      npm run test
      ```
 
-     Runs Vitest tests in watch mode, using jsdom for UI testing. Includes a workaround for Vite’s CJS deprecation warning.
+     Runs Vitest tests in watch mode with jsdom, including a workaround for Vite’s CommonJS deprecation warning.
 
 - **Run Tests with UI**:
 
@@ -114,61 +133,20 @@ In the project directory, you can run:
 
 ## Project Structure
 
-- `app/`: Contains Next.js App Router pages and layouts (e.g., `app/page.tsx`).
-- `app/__tests__/`: Test files for Vitest (e.g., `page.test.tsx`).
+- `app/`: Contains Next.js App Router pages and layouts (e.g., `app/page.tsx`, `app/layout.tsx`).
+- `app/__tests__/`: Vitest test files (e.g., `page.test.tsx`).
 - `app/tests/`: Test setup files (e.g., `setup.ts` for React Testing Library).
-- `components/`: Reusable React components (optional, create as needed).
+- `components/`: Custom components, including `theme-provider.tsx`.
+- `components/ui/`: shadcn/ui components (e.g., `button.tsx`, `dropdown-menu.tsx`, `mode-toggle.tsx`).
+- `lib/`: Utility functions (e.g., `utils.ts` for `cn` helper).
 - `.vscode/`: VS Code settings for Prettier and ESLint integration.
 
-## Testing
+## Theming
 
-This project uses Vitest with jsdom for unit testing React components. A sample test is provided in `app/__tests__/page.test.tsx`, which tests the `Home` component in `app/page.tsx`.
+- **Theme Provider**: Configured in `components/theme-provider.tsx` using `next-themes` for light, dark, and system mode support.
+- **Mode Toggle**: A `ModeToggle` component in `components/ui/mode-toggle.tsx` provides a dropdown to switch themes.
+- **Customization**: Edit `app/globals.css` to modify theme colors or use the shadcn/ui theme editor at [ui.shadcn.com/themes](https://ui.shadcn.com/themes).
 
-To write new tests:
+## Adding shadcn/ui Components
 
-1. Create test files in `app/__tests__/` with `.test.tsx` or `.spec.tsx` extensions.
-2. Use React Testing Library and jest-dom matchers (e.g., `toHaveTextContent`).
-
-Example:
-
-```tsx
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import Home from '../page';
-
-describe('Home Component', () => {
-	it('renders the welcome heading', () => {
-		render(<Home />);
-		expect(screen.getByTestId('home-heading')).toHaveTextContent(
-			'Welcome to Next.js 15'
-		);
-	});
-});
-```
-
-## Formatting and Linting
-
-- **Prettier**: Configured in `.prettierrc` with tabs (`tabWidth: 4`), single quotes, and other rules. Run `npm run format` to format files or `npm run format:check` to verify formatting.
-- **ESLint**: Uses flat configuration in `eslint.config.mjs`, focusing on code quality (e.g., `no-unused-vars`). Formatting rules are disabled to avoid conflicts with Prettier. Run `npm run lint` to check for issues.
-- **VS Code**: `.vscode/settings.json` enables auto-formatting with Prettier and ESLint fixes on save.
-
-## Notes
-
-- **CommonJS**: The project uses CommonJS (`"module": "CommonJS"` in `tsconfig.json`) to avoid setting `"type": "module"` in `package.json`. Vitest uses ESM via `vitest.config.mts` and a `VITE_CJS_IGNORE_WARNING=true` workaround for Vite’s CJS deprecation.
-- **No `src/` Directory**: Source files are in `app/`, with tests in `app/__tests__/`.
-- **Next.js 15**: Compatible with Next.js 15.3.2 and React 19, using the App Router.
-- **Vitest Warning**: The `VITE_CJS_IGNORE_WARNING=true` prefix in test scripts suppresses Vite’s CJS deprecation warning. This is temporary until Vite 6, when full ESM migration may be required.
-
-## Troubleshooting
-
-- **CJS Deprecation Warning**: If the warning persists, ensure `vitest.config.mts` is used and run `npm update` to get the latest `vitest` and `@vitejs/plugin-react`.
-- **Test Failures**: Check `app/tests/setup.ts` and ensure dependencies like `@testing-library/react` are version `^16.0.1` for React 19 compatibility.
-- **Formatting Issues**: Verify `.prettierrc` and `.prettierignore` are applied. Run `npm run format:check`.
-- **Linting Issues**: Check `eslint.config.mjs` and ensure the ESLint VS Code extension is installed.
-
-For further assistance, refer to:
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Vitest Documentation](https://vitest.dev)
-- [Prettier Documentation](https://prettier.io/docs/en/index.html)
-- [ESLint Documentation](https://eslint.org/docs/latest/)
+To add more sh
