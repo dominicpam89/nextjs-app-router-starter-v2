@@ -1,0 +1,43 @@
+{
+	// Enable Prettier as the default formatter
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	// Format files on save using Prettier
+	"editor.formatOnSave": true,
+	// Ensure formatting applies to specific file types
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true
+	},
+	// Disable VS Code's built-in TypeScript formatting to avoid conflicts with Prettier
+	"typescript.format.enable": false,
+	"javascript.format.enable": false,
+	// Enable ESLint integration
+	"eslint.enable": true,
+	"eslint.format.enable": false, // Prettier handles formatting
+	"eslint.lintTask.enable": true,
+	// Run ESLint fixes on save
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
+	// Specify ESLint working directories (no src/ directory)
+	"eslint.workingDirectories": ["./"],
+	// Ensure ESLint validates the correct file types
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact"
+	]
+}
